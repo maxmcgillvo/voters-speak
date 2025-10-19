@@ -1,0 +1,44 @@
+name: Deploy voters-speak
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup deployment environment
+        run: |
+          echo "Setting up deployment environment"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          
+      - name: Create deployment package
+        run: |
+          echo "Creating deployment package"
+          mkdir -p deployment-package
+          cp -r ./* deployment-package/ 2>/dev/null || true
+          cd deployment-package
+          zip -r ../voters-speak-github-deployment.zip . -x "*.git*"
+          
+      - name: Upload deployment artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: voters-speak-github-deployment
+          path: voters-speak-github-deployment.zip
+          retention-days: 30
+          
+      - name: Deploy notification
+        run: |
+          echo "Deployment package created successfully"
+          echo "Package: voters-speak-github-deployment.zip"
