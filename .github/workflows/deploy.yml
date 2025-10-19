@@ -1,7 +1,6 @@
----
 name: Deploy voters-speak
 
-'on':
+on:
   push:
     branches:
       - main
@@ -28,9 +27,13 @@ jobs:
         run: |
           echo "Creating deployment package"
           mkdir -p deployment-package
-          cp -r ./* deployment-package/ 2>/dev/null || true
+          rsync -av \
+            --exclude='deployment-package' \
+            --exclude='.git' \
+            --exclude='*.zip' \
+            ./ deployment-package/
           cd deployment-package
-          zip -r ../voters-speak-github-deployment.zip . -x "*.git*"
+          zip -r ../voters-speak-github-deployment.zip .
 
       - name: Upload deployment artifact
         uses: actions/upload-artifact@v3
