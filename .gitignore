@@ -1,0 +1,24 @@
+# Deployment packages
+*.zip
+voters-speak-github-deployment.zip
+
+# Temporary deployment files
+deployment-temp/
+deployment-package/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Node modules (if added later)
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
